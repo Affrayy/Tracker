@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stored Locations</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 800px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Stored Locations</h1>
+  <table id="locationsTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data rows will be inserted here -->
+    </tbody>
+  </table>
+
+  <script>
+    async function fetchLocations() {
+      try {
+        const response = await fetch('/api/locations');
+        const locations = await response.json();
+        const tbody = document.querySelector('#locationsTable tbody');
+        tbody.innerHTML = '';
+        locations.forEach(loc => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${loc.id}</td>
+            <td>${loc.latitude}</td>
+            <td>${loc.longitude}</td>
+            <td>${loc.timestamp}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (error) {
+        console.error('Error fetching locations:', error);
+      }
+    }
+
+    fetchLocations();
+  </script>
+</body>
+</html>
